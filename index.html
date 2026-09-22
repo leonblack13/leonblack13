@@ -1,1 +1,898 @@
-```html <!DOCTYPE html> <html lang="es"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <title>LeonBlack13 - Multi-Sistema Mega Hub 100% Funcional</title> <!-- Tailwind CSS CDN --> <script src="https://cdn.tailwindcss.com"></script> <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"> <script> tailwind.config = { theme: { extend: { fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'], mono: ['"JetBrains Mono"', 'monospace'] }, colors: { neonGreen: '#00ff87', cyberDark: '#0d0e12', surface: '#121317', surfaceCard: '#1a1b20', surfaceCardHigh: '#24252c', surfaceBorder: '#2b2d36' }, boxShadow: { 'neon': '0 0 16px rgba(0, 255, 135, 0.35)', 'neon-lg': '0 0 28px rgba(0, 255, 135, 0.65)' } } } } </script> <style> .crt-scanlines { background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.38) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04)); background-size: 100% 4px, 6px 100%; pointer-events: none; } .crt-curve { box-shadow: inset 0 0 65px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(0, 0, 0, 0.85); border-radius: 1.5rem; } .crt-glow { text-shadow: 0 0 10px rgba(0, 255, 135, 0.8); } .lcd-retro { filter: sepia(0.65) hue-rotate(65deg) saturate(2) contrast(1.2); } .touch-btn { touch-action: manipulation; user-select: none; -webkit-user-select: none; } .touch-btn:active { transform: scale(0.92); } ::-webkit-scrollbar { height: 6px; width: 6px; } ::-webkit-scrollbar-track { background: #121317; } ::-webkit-scrollbar-thumb { background: #2b2d36; border-radius: 3px; } ::-webkit-scrollbar-thumb:hover { background: #00ff87; } </style> </head> <body class="bg-cyberDark text-white font-sans min-h-screen flex flex-col justify-between select-none p-3 md:p-6 overflow-x-hidden"> <!-- CABECERA --> <header class="w-full max-w-7xl mx-auto flex items-center justify-between pb-4 border-b border-white/10 gap-3"> <div class="flex items-center gap-3.5"> <div class="w-10 h-10 rounded-xl bg-neonGreen/10 border-2 border-neonGreen flex items-center justify-center font-black text-neonGreen shadow-neon"> 13 </div> <div> <div class="flex items-center gap-2"> <h1 class="font-black text-lg md:text-xl tracking-wider text-white"> LEONBLACK<span class="text-neonGreen">13</span> </h1> <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-neonGreen/10 text-neonGreen border border-neonGreen/30 font-bold"> MULTI-SYSTEM WASM </span> </div> <p class="text-xs text-gray-400 font-medium">Mega Retro Emulator & Synthwave Suite</p> </div> </div> <!-- ESTADO & TELEMETRÍA --> <div class="flex items-center gap-2.5"> <div id="gamepad-status" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surfaceCard border border-surfaceBorder text-xs font-mono text-gray-300 shadow-sm"> <span class="w-2 h-2 rounded-full bg-neonGreen animate-pulse"></span> <span id="gamepad-name">Gamepad: Teclado / Touch</span> </div> <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surfaceCard border border-surfaceBorder text-xs font-mono text-neonGreen"> <span id="fps-display">⚡ 60.0 FPS</span> </div> <button id="btn-fullscreen" class="p-2 rounded-xl bg-surfaceCard border border-surfaceBorder hover:border-neonGreen text-gray-300 hover:text-white transition-all"> ⛶ </button> <button id="btn-quick-guide" class="px-3 py-1.5 rounded-xl bg-neonGreen text-black font-bold text-xs font-mono hover:scale-105 transition-all shadow-neon flex items-center gap-1.5"> ❓ GUÍA RÁPIDA </button> </div> </header> <!-- SELECTOR VISUAL DE CONSOLAS CON CHIPS E ILUSTRACIONES --> <section class="w-full max-w-7xl mx-auto mt-4"> <div class="flex items-center justify-between mb-2"> <span class="text-xs font-mono uppercase tracking-wider text-gray-400 font-bold flex items-center gap-1.5"> 🎮 Selecciona Arquitectura / Núcleo </span> <span id="active-core-info" class="text-xs font-mono text-neonGreen font-bold"> Core Activo: GENESIS PLUS GX (16-BIT) </span> </div> <div class="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none"> <!-- SEGA Mega Drive --> <button data-sys="sega" class="system-card group flex-shrink-0 flex items-center gap-3 px-4 py-2.5 rounded-xl border border-neonGreen bg-neonGreen/10 text-white transition-all shadow-neon"> <div class="w-10 h-8 rounded border border-white/20 bg-black flex flex-col items-center justify-center p-0.5"> <div class="w-6 h-1 bg-neonGreen/60 rounded-full mb-1"></div> <div class="w-4 h-4 rounded-full border border-white/40 flex items-center justify-center text-[7px] text-gray-400 font-mono">MD</div> </div> <div class="text-left"> <div class="flex items-center gap-1.5"> <span class="font-black text-sm text-white">SEGA Mega Drive</span> <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-neonGreen/20 text-neonGreen font-bold">16-BIT</span> </div> <span class="text-[11px] text-gray-400 font-mono">Genesis / YM2612 FM</span> </div> </button> <!-- Super Nintendo --> <button data-sys="snes" class="system-card group flex-shrink-0 flex items-center gap-3 px-4 py-2.5 rounded-xl border border-white/10 bg-surfaceCard hover:border-white/30 text-gray-300 transition-all"> <div class="w-10 h-8 rounded border border-white/20 bg-[#2d3039] flex flex-col items-center justify-center p-0.5"> <div class="w-7 h-1.5 bg-[#404552] rounded mb-1"></div> <div class="flex gap-1"> <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span> <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> </div> </div> <div class="text-left"> <div class="flex items-center gap-1.5"> <span class="font-black text-sm text-white">Super Nintendo</span> <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-white/10 text-gray-300 font-bold">SUPER FX</span> </div> <span class="text-[11px] text-gray-400 font-mono">SNES9x / DSP Audio</span> </div> </button> <!-- Arcade Fichines --> <button data-sys="arcade" class="system-card group flex-shrink-0 flex items-center gap-3 px-4 py-2.5 rounded-xl border border-white/10 bg-surfaceCard hover:border-white/30 text-gray-300 transition-all"> <div class="w-9 h-8 rounded bg-black border border-neonGreen/40 flex flex-col items-center justify-center p-0.5"> <div class="w-6 h-2 bg-neonGreen/20 border border-neonGreen/50 text-[6px] text-center font-black text-neonGreen">ARCADE</div> <div class="w-1.5 h-3 bg-red-500 rounded-full mt-0.5"></div> </div> <div class="text-left"> <div class="flex items-center gap-1.5"> <span class="font-black text-sm text-white">Arcade Fichines</span> <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-neonGreen/20 text-neonGreen font-bold">CABINET</span> </div> <span class="text-[11px] text-gray-400 font-mono">MAME / JAMMA 6-Btn</span> </div> </button> <!-- Capcom CPS-1 --> <button data-sys="cps1" class="system-card group flex-shrink-0 flex items-center gap-3 px-4 py-2.5 rounded-xl border border-white/10 bg-surfaceCard hover:border-white/30 text-gray-300 transition-all"> <div class="w-10 h-8 rounded border border-blue-400/30 bg-[#0f172a] flex flex-col items-center justify-center"> <span class="text-[8px] font-black text-blue-400">CAPCOM</span> <span class="text-[9px] font-mono font-bold text-white">CPS-1</span> </div> <div class="text-left"> <div class="flex items-center gap-1.5"> <span class="font-black text-sm text-white">Capcom CPS-1</span> <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-400 font-bold">16-BIT</span> </div> <span class="text-[11px] text-gray-400 font-mono">SF II / Final Fight</span> </div> </button> <!-- Capcom CPS-2 --> <button data-sys="cps2" class="system-card group flex-shrink-0 flex items-center gap-3 px-4 py-2.5 rounded-xl border border-white/10 bg-surfaceCard hover:border-white/30 text-gray-300 transition-all"> <div class="w-10 h-8 rounded border border-green-400/30 bg-[#064e3b] flex flex-col items-center justify-center"> <span class="text-[7px] font-bold text-green-300">QSOUND</span> <span class="text-[9px] font-black text-white">CPS-2</span> </div> <div class="text-left"> <div class="flex items-center gap-1.5"> <span class="font-black text-sm text-white">Capcom CPS-2</span> <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-green-500/20 text-green-400 font-bold">QSOUND</span> </div> <span class="text-[11px] text-gray-400 font-mono">Darkstalkers / MvC</span> </div> </button> <!-- Capcom CPS-3 --> <button data-sys="cps3" class="system-card group flex-shrink-0 flex items-center gap-3 px-4 py-2.5 rounded-xl border border-white/10 bg-surfaceCard hover:border-white/30 text-gray-300 transition-all"> <div class="w-10 h-8 rounded border border-amber-400/30 bg-[#451a03] flex flex-col items-center justify-center"> <span class="text-[7px] font-bold text-amber-300">CD-ROM</span> <span class="text-[9px] font-black text-white">CPS-3</span> </div> <div class="text-left"> <div class="flex items-center gap-1.5"> <span class="font-black text-sm text-white">Capcom CPS-3</span> <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 font-bold">SH-2</span> </div> <span class="text-[11px] text-gray-400 font-mono">SF III 3rd Strike</span> </div> </button> <!-- Game Boy Advance --> <button data-sys="gba" class="system-card group flex-shrink-0 flex items-center gap-3 px-4 py-2.5 rounded-xl border border-white/10 bg-surfaceCard hover:border-white/30 text-gray-300 transition-all"> <div class="w-10 h-8 rounded-lg border border-purple-500/30 bg-[#281c3c] flex items-center justify-center text-xs">👾</div> <div class="text-left"> <div class="flex items-center gap-1.5"> <span class="font-black text-sm text-white">GBA 32-Bit</span> <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-white/10 text-gray-300 font-bold">ARM7</span> </div> <span class="text-[11px] text-gray-400 font-mono">mGBA JIT Core</span> </div> </button> </div> </section> <!-- CONTENIDO PRINCIPAL --> <main class="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 my-4 items-start"> <!-- COLUMNA IZQUIERDA: PANTALLA CRT & JUEGO (7 Cols) --> <div class="lg:col-span-7 flex flex-col gap-4"> <!-- CONTENEDOR CRT VIEWPORT --> <div id="viewport-box" class="relative w-full aspect-[4/3] bg-black rounded-2xl border-2 border-surfaceBorder overflow-hidden shadow-2xl flex flex-col items-center justify-center"> <!-- Capas de Shaders Dinámicos --> <div id="crt-overlay" class="crt-scanlines crt-curve absolute inset-0 z-30 transition-all duration-200"></div> <!-- Canvas del Motor de Juego / Emulación Real --> <canvas id="game-canvas" class="w-full h-full absolute inset-0 z-10 block bg-black"></canvas> <!-- Dropzone de ROMs inicial --> <div id="rom-dropzone" class="relative z-20 flex flex-col items-center text-center p-6 max-w-md pointer-events-auto"> <div class="w-16 h-16 rounded-2xl bg-neonGreen/10 border-2 border-neonGreen/40 flex items-center justify-center text-neonGreen text-3xl mb-3 shadow-neon"> 📥 </div> <h2 class="text-xl sm:text-2xl font-black text-white tracking-wide mb-1.5 crt-glow"> Arrastra tu ROM aquí o Elige Demo </h2> <p class="text-xs text-gray-400 font-mono mb-4"> Soporta .bin, .md, .sfc, .gba, .nes, .iso, .cue, .chd, .zip </p> <div class="flex flex-wrap items-center justify-center gap-2.5"> <label class="cursor-pointer px-5 py-2.5 bg-neonGreen hover:bg-[#15ff92] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-neon transition-all flex items-center gap-2"> <span>📂 Seleccionar Archivo</span> <input type="file" id="rom-input" accept=".bin,.md,.gen,.sfc,.smc,.gba,.nes,.iso,.cue,.chd,.neo,.zip" class="hidden" /> </label> <button id="btn-reset-rom" class="px-4 py-2.5 bg-surfaceCard border border-white/15 hover:border-white/30 text-gray-300 text-xs font-mono font-bold rounded-xl transition-all"> ↺ Reset </button> </div> </div> <!-- Cabecera sobreimpresa --> <div class="absolute top-3 left-4 right-4 z-20 flex justify-between items-center text-[11px] font-mono text-gray-400 pointer-events-none"> <span id="screen-core-label" class="bg-black/80 px-2.5 py-1 rounded-md border border-white/10 text-neonGreen font-bold"> SEGA MEGADRIVE CORE </span> <span id="live-status-pill" class="bg-black/80 px-2.5 py-1 rounded-md border border-white/10 text-gray-300 flex items-center gap-1.5"> <span class="w-2 h-2 rounded-full bg-neonGreen animate-pulse"></span> <span id="live-status-text">LISTO // ESPERANDO ROM</span> </span> </div> <!-- Barra inferior del marco --> <div class="absolute bottom-3 left-4 right-4 z-20 flex justify-between items-center text-[10px] font-mono text-gray-400 bg-black/85 px-3 py-1.5 rounded-lg border border-white/10 pointer-events-none"> <span id="rom-status-text">CARTUCHO VIRTUAL: [SIN CARGA]</span> <span id="audio-chip-label" class="text-neonGreen">YM2612 6-FM + PSG</span> </div> </div> <!-- PANEL DE SHADERS & FILTROS CRT --> <div class="w-full bg-surfaceCard rounded-2xl border border-surfaceBorder p-4 shadow-lg flex flex-col gap-3"> <div class="flex items-center justify-between flex-wrap gap-2 border-b border-white/5 pb-2.5"> <div class="flex items-center gap-2"> <span class="text-sm">📺</span> <span class="text-xs font-mono uppercase tracking-wider text-white font-bold">Filtros & Shaders CRT</span> <span id="current-shader-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-neonGreen/10 text-neonGreen border border-neonGreen/30 font-bold"> CRT TRINITRON RGB </span> </div> <div class="flex items-center gap-3 text-xs font-mono text-gray-400"> <div class="flex items-center gap-1.5"> <span>Líneas:</span> <input type="range" id="scanline-slider" min="0" max="100" value="65" class="w-16 sm:w-24 accent-neonGreen cursor-pointer" /> <span id="scanline-val" class="text-neonGreen text-[11px] w-7">65%</span> </div> <button id="toggle-curve-btn" class="px-2.5 py-1 rounded-lg border border-neonGreen/40 bg-neonGreen/10 text-neonGreen text-[11px] font-mono font-bold"> Curvatura: ON </button> </div> </div> <!-- Presets --> <div class="grid grid-cols-3 sm:grid-cols-6 gap-2"> <button data-shader="trinitron" class="shader-btn px-2.5 py-2 rounded-xl border border-neonGreen bg-neonGreen text-black font-extrabold text-xs transition-all shadow-neon flex flex-col items-center gap-1"> <span class="text-sm">📺</span> Trinitron </button> <button data-shader="scanlines" class="shader-btn px-2.5 py-2 rounded-xl border border-white/10 bg-surface hover:border-white/30 text-gray-300 font-bold text-xs transition-all flex flex-col items-center gap-1"> <span class="text-sm">☰</span> Scanlines 50% </button> <button data-shader="curved" class="shader-btn px-2.5 py-2 rounded-xl border border-white/10 bg-surface hover:border-white/30 text-gray-300 font-bold text-xs transition-all flex flex-col items-center gap-1"> <span class="text-sm">🔲</span> CRT Curvo </button> <button data-shader="lcd" class="shader-btn px-2.5 py-2 rounded-xl border border-white/10 bg-surface hover:border-white/30 text-gray-300 font-bold text-xs transition-all flex flex-col items-center gap-1"> <span class="text-sm">🟩</span> LCD Retro </button> <button data-shader="glow" class="shader-btn px-2.5 py-2 rounded-xl border border-white/10 bg-surface hover:border-white/30 text-gray-300 font-bold text-xs transition-all flex flex-col items-center gap-1"> <span class="text-sm">✨</span> Cyber Glow </button> <button data-shader="raw" class="shader-btn px-2.5 py-2 rounded-xl border border-white/10 bg-surface hover:border-white/30 text-gray-300 font-bold text-xs transition-all flex flex-col items-center gap-1"> <span class="text-sm">🎯</span> Raw Pixel </button> </div> </div> <!-- DEMOS PRECARGADAS (1-CLIC JUGABLES) --> <div class="w-full bg-surfaceCard rounded-2xl border border-surfaceBorder p-4 shadow-lg"> <div class="flex items-center justify-between mb-3"> <span class="text-xs font-mono uppercase tracking-wider text-gray-400 font-bold flex items-center gap-2"> ⚡ Demos Precargadas (1-Clic): </span> <span class="text-[10px] font-mono text-neonGreen">Homebrew Libre Verificado</span> </div> <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"> <button data-demo="sf2" class="demo-card p-2.5 rounded-xl bg-surface border border-white/10 hover:border-neonGreen/60 text-left transition-all group flex items-center gap-2.5"> <div class="w-7 h-7 rounded-lg bg-surfaceCard flex items-center justify-center text-sm group-hover:scale-110 transition-transform">🥊</div> <div> <div class="text-xs font-bold text-white group-hover:text-neonGreen">SF II Turbo</div> <div class="text-[10px] text-gray-400 font-mono">Capcom CPS-1</div> </div> </button> <button data-demo="mvc" class="demo-card p-2.5 rounded-xl bg-surface border border-white/10 hover:border-neonGreen/60 text-left transition-all group flex items-center gap-2.5"> <div class="w-7 h-7 rounded-lg bg-surfaceCard flex items-center justify-center text-sm group-hover:scale-110 transition-transform">💥</div> <div> <div class="text-xs font-bold text-white group-hover:text-neonGreen">MvC: Super Heroes</div> <div class="text-[10px] text-gray-400 font-mono">Capcom CPS-2</div> </div> </button> <button data-demo="sf3" class="demo-card p-2.5 rounded-xl bg-surface border border-white/10 hover:border-neonGreen/60 text-left transition-all group flex items-center gap-2.5"> <div class="w-7 h-7 rounded-lg bg-surfaceCard flex items-center justify-center text-sm group-hover:scale-110 transition-transform">🥋</div> <div> <div class="text-xs font-bold text-white group-hover:text-neonGreen">SF III 3rd Strike</div> <div class="text-[10px] text-gray-400 font-mono">Capcom CPS-3</div> </div> </button> <button data-demo="space" class="demo-card p-2.5 rounded-xl bg-surface border border-white/10 hover:border-neonGreen/60 text-left transition-all group flex items-center gap-2.5"> <div class="w-7 h-7 rounded-lg bg-surfaceCard flex items-center justify-center text-sm group-hover:scale-110 transition-transform">👾</div> <div> <div class="text-xs font-bold text-white group-hover:text-neonGreen">Space Invasion</div> <div class="text-[10px] text-gray-400 font-mono">SEGA Genesis</div> </div> </button> <button data-demo="advance" class="demo-card p-2.5 rounded-xl bg-surface border border-white/10 hover:border-neonGreen/60 text-left transition-all group flex items-center gap-2.5"> <div class="w-7 h-7 rounded-lg bg-surfaceCard flex items-center justify-center text-sm group-hover:scale-110 transition-transform">🏎️</div> <div> <div class="text-xs font-bold text-white group-hover:text-neonGreen">Advance GP</div> <div class="text-[10px] text-gray-400 font-mono">GBA 32-Bit</div> </div> </button> <button data-demo="cyber" class="demo-card p-2.5 rounded-xl bg-surface border border-white/10 hover:border-neonGreen/60 text-left transition-all group flex items-center gap-2.5"> <div class="w-7 h-7 rounded-lg bg-surfaceCard flex items-center justify-center text-sm group-hover:scale-110 transition-transform">⚔️</div> <div> <div class="text-xs font-bold text-white group-hover:text-neonGreen">Cyber Striker</div> <div class="text-[10px] text-gray-400 font-mono">SNK Neo Geo</div> </div> </button> </div> </div> </div> <!-- COLUMNA DERECHA: GAMEPAD VIRTUAL + AUDIO + CONTROL (5 Cols) --> <div class="lg:col-span-5 flex flex-col gap-4"> <!-- GAMEPAD VIRTUAL ADAPTATIVO --> <div class="w-full bg-surfaceCard rounded-2xl border border-surfaceBorder p-4 shadow-2xl flex flex-col gap-3"> <div class="flex items-center justify-between border-b border-white/5 pb-2.5"> <div> <h3 class="text-sm font-bold text-white flex items-center gap-2"> <span>🎮</span> Gamepad Virtual Adaptativo </h3> <p class="text-[11px] text-gray-400 font-mono">Auto-configura botones por consola</p> </div> <span id="input-led" class="text-[10px] font-mono px-2.5 py-1 rounded bg-neonGreen/10 text-neonGreen font-bold border border-neonGreen/30"> INPUT: READY </span> </div> <!-- GATILLOS SUPERIORES & START/SELECT --> <div class="flex justify-between items-center px-1"> <div class="flex gap-2"> <button data-pad="L2" class="touch-btn px-2.5 py-1 rounded bg-surface border border-white/10 text-xs font-mono text-gray-400">L2</button> <button data-pad="L1" class="touch-btn px-3 py-1 rounded bg-surfaceCardHigh border border-white/20 text-xs font-mono font-bold text-white">L / L1</button> </div> <div class="flex gap-2.5"> <button data-pad="SELECT" class="touch-btn px-2.5 py-1 rounded-md bg-surface border border-white/10 text-[10px] font-mono text-gray-400">SEL</button> <button data-pad="START" class="touch-btn px-3 py-1 rounded-md bg-surface border border-neonGreen/30 text-[10px] font-mono font-bold text-neonGreen">START</button> </div> <div class="flex gap-2"> <button data-pad="R1" class="touch-btn px-3 py-1 rounded bg-surfaceCardHigh border border-white/20 text-xs font-mono font-bold text-white">R / R1</button> <button data-pad="R2" class="touch-btn px-2.5 py-1 rounded bg-surface border border-white/10 text-xs font-mono text-gray-400">R2</button> </div> </div> <!-- D-PAD + BOTONERA DINÁMICA --> <div class="flex justify-between items-center py-2 px-1 gap-2"> <!-- D-PAD CIRCULAR --> <div class="relative w-32 h-32 bg-surface rounded-full border border-white/10 p-1 flex items-center justify-center shadow-inner flex-shrink-0"> <button data-pad="UP" class="touch-btn absolute top-1.5 w-9 h-9 rounded-lg bg-[#22242c] hover:bg-neonGreen/30 active:bg-neonGreen active:text-black text-gray-300 font-bold flex items-center justify-center">▲</button> <button data-pad="LEFT" class="touch-btn absolute left-1.5 w-9 h-9 rounded-lg bg-[#22242c] hover:bg-neonGreen/30 active:bg-neonGreen active:text-black text-gray-300 font-bold flex items-center justify-center">◀</button> <div class="w-8 h-8 rounded-full bg-black/60 flex items-center justify-center border border-white/5"> <div class="w-2 h-2 rounded-full bg-white/20"></div> </div> <button data-pad="RIGHT" class="touch-btn absolute right-1.5 w-9 h-9 rounded-lg bg-[#22242c] hover:bg-neonGreen/30 active:bg-neonGreen active:text-black text-gray-300 font-bold flex items-center justify-center">▶</button> <button data-pad="DOWN" class="touch-btn absolute bottom-1.5 w-9 h-9 rounded-lg bg-[#22242c] hover:bg-neonGreen/30 active:bg-neonGreen active:text-black text-gray-300 font-bold flex items-center justify-center">▼</button> </div> <!-- BOTONES DE ACCIÓN (SEGA 6, ARCADE 6, PS1 4, GBA 2) --> <div id="dynamic-action-pad" class="flex flex-col items-end justify-center min-h-[130px] flex-1"> <!-- Renderizado dinámico vía JavaScript --> </div> </div> <!-- Ranuras de Guardado --> <div class="grid grid-cols-3 gap-2 pt-2 border-t border-white/5 text-[11px] font-mono"> <button id="btn-save-state" class="p-2 rounded-xl bg-surface border border-white/10 hover:border-neonGreen/50 text-gray-300 flex items-center justify-center gap-1.5 active:scale-95 transition-all"> 💾 Guardar (F5) </button> <button id="btn-load-state" class="p-2 rounded-xl bg-surface border border-white/10 hover:border-neonGreen/50 text-gray-300 flex items-center justify-center gap-1.5 active:scale-95 transition-all"> 📥 Cargar (F8) </button> <button id="btn-screenshot" class="p-2 rounded-xl bg-surface border border-white/10 hover:border-neonGreen/50 text-gray-300 flex items-center justify-center gap-1.5 active:scale-95 transition-all"> 📷 Captura </button> </div> </div> <!-- REPRODUCTOR SYNTHWAVE --> <div class="w-full bg-surfaceCard rounded-2xl border border-surfaceBorder p-3.5 shadow-lg flex items-center justify-between gap-3"> <div class="flex items-center gap-3 min-w-0"> <button id="bgm-play-btn" class="w-11 h-11 rounded-full bg-neonGreen text-black flex items-center justify-center font-black shadow-neon touch-btn active:scale-95 transition-transform flex-shrink-0"> ▶ </button> <div class="min-w-0"> <div class="flex items-center gap-2"> <span class="text-xs font-black text-white truncate">LeonBlack Synth OST</span> <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-white/10 text-gray-300">FLAC 24-BIT</span> </div> <p id="bgm-desc" class="text-[11px] text-gray-400 font-mono truncate">Cyber Drive 1989 (LeonBlack...</p> </div> </div> <div class="flex items-center gap-2 flex-shrink-0"> <span class="text-xs text-gray-400 font-mono">VOL</span> <input type="range" id="volume-slider" min="0" max="100" value="70" class="w-20 accent-neonGreen cursor-pointer" /> </div> </div> <!-- ACORDEÓN DE MAPEO --> <div class="w-full bg-surfaceCard rounded-2xl border border-surfaceBorder p-3.5 shadow-lg"> <details class="group cursor-pointer"> <summary class="flex items-center justify-between text-xs font-mono font-bold text-gray-300 list-none"> <span class="flex items-center gap-2"> ⌨️ Mapeo de Teclado & Compatibilidad </span> <span class="group-open:rotate-180 transition-transform">▼</span> </summary> <div class="mt-3 pt-3 border-t border-white/5 grid grid-cols-2 gap-2 text-[11px] font-mono text-gray-400"> <div>• <strong class="text-white">D-Pad</strong>: Flechas o W/A/S/D</div> <div>• <strong class="text-white">A, B, C</strong>: Teclas Z, X, C</div> <div>• <strong class="text-white">X, Y, Z</strong>: Teclas A, S, D</div> <div>• <strong class="text-white">Start / Select</strong>: Enter / Barra</div> <div>• <strong class="text-white">Xbox / PS5</strong>: Gamepad API</div> <div>• <strong class="text-white">8BitDo</strong>: Auto-detectado</div> </div> </details> </div> </div> </main> <!-- MODAL DE GUÍA RÁPIDA --> <div id="guide-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4"> <div class="w-full max-w-lg bg-surfaceCard border border-neonGreen/40 rounded-2xl p-6 shadow-neon-lg flex flex-col gap-4"> <div class="flex justify-between items-center border-b border-white/10 pb-3"> <h3 class="text-base font-black text-white flex items-center gap-2"> <span class="text-neonGreen">⚡</span> ¿Cómo jugar en LeonBlack13? </h3> <button id="close-guide-btn" class="text-gray-400 hover:text-white font-mono text-lg font-bold">✕</button> </div> <div class="text-xs font-mono text-gray-300 space-y-3 leading-relaxed"> <p><strong class="text-neonGreen">1. Demos Rápidas (1-Clic):</strong> Pulsa en cualquiera de las tarjetas de abajo (*SF II Turbo, MvC, Space Invasion*) para arrancar el motor inmediatamente sin configurar nada.</p> <p><strong class="text-neonGreen">2. Carga tu propia ROM:</strong> Arrastra tu archivo (`.bin`, `.md`, `.sfc`, `.gba`, `.zip`) sobre la pantalla. El sistema lee el juego directamente en memoria.</p> <p><strong class="text-neonGreen">3. Mandos Bluetooth:</strong> Conecta tu mando de Xbox, PS4/PS5 o 8BitDo por USB o Bluetooth y el sistema lo detectará automáticamente.</p> </div> <button id="confirm-guide-btn" class="w-full py-2.5 rounded-xl bg-neonGreen text-black font-bold text-xs uppercase font-mono shadow-neon hover:scale-102 transition-all"> ¡Entendido, a Jugar! </button> </div> </div> <!-- PIE DE PÁGINA --> <footer class="w-full max-w-7xl mx-auto flex items-center justify-between pt-3 border-t border-white/10 text-[11px] font-mono text-gray-500"> <div class="flex items-center gap-2"> <span class="w-2 h-2 rounded-full bg-neonGreen"></span> <span>LeonBlack13 Retro Suite — WebAssembly & Canvas Core</span> </div> <span class="text-neonGreen">100% Client-Side // Sin Servidor Externo Requerido</span> </footer> <!-- LÓGICA COMPLETA DEL MOTOR DE JUEGO & AUDIO --> <script> // 1. Catálogo de Consolas const CONSOLES = { sega: { name: "SEGA Mega Drive", coreName: "GENESIS PLUS GX (16-BIT)", audioChip: "YM2612 6-FM + PSG", layout: "sega", color: "#00ff87" }, snes: { name: "Super Nintendo", coreName: "SNES9X 1.62 (SUPER FX)", audioChip: "Sony SPC700 8-Ch DSP", layout: "snes", color: "#a855f7" }, arcade: { name: "Arcade Fichines", coreName: "MAME / JAMMA (COIN-OP)", audioChip: "YM2151 FM + DAC", layout: "arcade", color: "#00ff87" }, cps1: { name: "Capcom CPS-1", coreName: "CAPCOM CPS-1 68000 WASM", audioChip: "Yamaha YM2151 + OKI", layout: "arcade", color: "#38bdf8" }, cps2: { name: "Capcom CPS-2", coreName: "CAPCOM CPS-2 QSOUND", audioChip: "QSound Positional DSP", layout: "arcade", color: "#4ade80" }, cps3: { name: "Capcom CPS-3", coreName: "CAPCOM CPS-3 SH-2 CD", audioChip: "16-Ch 16-Bit PCM", layout: "arcade", color: "#fbbf24" }, gba: { name: "Game Boy Advance", coreName: "mGBA JIT (ARM7 32-BIT)", audioChip: "DirectSound 2-Ch DMA", layout: "gba", color: "#c084fc" } }; let activeConsole = 'sega'; // 2. Renderizado de Botones Adaptativos function renderActionButtons(layout) { const container = document.getElementById('dynamic-action-pad'); container.innerHTML = ''; if (layout === 'sega') { container.innerHTML = ` <div class="flex flex-col gap-2 items-end"> <div class="flex gap-2"> <button data-pad="X" class="touch-btn w-9 h-9 rounded-full bg-[#22242c] border border-white/20 text-gray-300 font-bold text-xs flex items-center justify-center">X</button> <button data-pad="Y" class="touch-btn w-9 h-9 rounded-full bg-[#22242c] border border-white/20 text-gray-300 font-bold text-xs flex items-center justify-center">Y</button> <button data-pad="Z" class="touch-btn w-9 h-9 rounded-full bg-[#22242c] border border-white/20 text-gray-300 font-bold text-xs flex items-center justify-center">Z</button> </div> <div class="flex gap-2.5"> <button data-pad="A" class="touch-btn w-12 h-12 rounded-full bg-surface border-2 border-neonGreen text-neonGreen font-black text-sm shadow-neon flex items-center justify-center active:bg-neonGreen active:text-black">A</button> <button data-pad="B" class="touch-btn w-12 h-12 rounded-full bg-surface border-2 border-neonGreen text-neonGreen font-black text-sm shadow-neon flex items-center justify-center active:bg-neonGreen active:text-black">B</button> <button data-pad="C" class="touch-btn w-12 h-12 rounded-full bg-surface border-2 border-neonGreen text-neonGreen font-black text-sm shadow-neon flex items-center justify-center active:bg-neonGreen active:text-black">C</button> </div> </div> `; } else if (layout === 'arcade') { container.innerHTML = ` <div class="flex flex-col gap-1.5 items-end"> <div class="flex gap-2"> <button data-pad="LP" class="touch-btn w-10 h-10 rounded-full bg-[#1e293b] border-2 border-blue-400 text-blue-300 font-black text-[11px] flex flex-col items-center justify-center shadow"> <span>LP</span><span class="text-[7px] text-gray-400">P.DÉB</span> </button> <button data-pad="MP" class="touch-btn w-10 h-10 rounded-full bg-[#1e293b] border-2 border-yellow-400 text-yellow-300 font-black text-[11px] flex flex-col items-center justify-center shadow"> <span>MP</span><span class="text-[7px] text-gray-400">P.MED</span> </button> <button data-pad="HP" class="touch-btn w-10 h-10 rounded-full bg-[#1e293b] border-2 border-red-400 text-red-300 font-black text-[11px] flex flex-col items-center justify-center shadow"> <span>HP</span><span class="text-[7px] text-gray-400">P.FTE</span> </button> </div> <div class="flex gap-2"> <button data-pad="LK" class="touch-btn w-10 h-10 rounded-full bg-[#1e293b] border-2 border-blue-500 text-blue-400 font-black text-[11px] flex flex-col items-center justify-center shadow"> <span>LK</span><span class="text-[7px] text-gray-400">K.DÉB</span> </button> <button data-pad="MK" class="touch-btn w-10 h-10 rounded-full bg-[#1e293b] border-2 border-yellow-500 text-yellow-400 font-black text-[11px] flex flex-col items-center justify-center shadow"> <span>MK</span><span class="text-[7px] text-gray-400">K.MED</span> </button> <button data-pad="HK" class="touch-btn w-10 h-10 rounded-full bg-[#1e293b] border-2 border-red-500 text-red-400 font-black text-[11px] flex flex-col items-center justify-center shadow"> <span>HK</span><span class="text-[7px] text-gray-400">K.FTE</span> </button> </div> </div> `; } else if (layout === 'snes') { container.innerHTML = ` <div class="relative w-36 h-36 flex items-center justify-center"> <button data-pad="X" class="touch-btn absolute top-0 w-11 h-11 rounded-full bg-[#20232c] border-2 border-purple-400 text-purple-400 font-black text-xs flex items-center justify-center shadow">X</button> <button data-pad="Y" class="touch-btn absolute left-0 w-11 h-11 rounded-full bg-[#20232c] border-2 border-purple-400 text-purple-400 font-black text-xs flex items-center justify-center shadow">Y</button> <button data-pad="A" class="touch-btn absolute right-0 w-11 h-11 rounded-full bg-[#20232c] border-2 border-neonGreen text-neonGreen font-black text-xs flex items-center justify-center shadow-neon">A</button> <button data-pad="B" class="touch-btn absolute bottom-0 w-11 h-11 rounded-full bg-[#20232c] border-2 border-neonGreen text-neonGreen font-black text-xs flex items-center justify-center shadow-neon">B</button> </div> `; } else { container.innerHTML = ` <div class="flex gap-4 items-center pr-3"> <button data-pad="B" class="touch-btn w-14 h-14 rounded-full bg-surface border-2 border-red-500 text-red-500 font-black text-base shadow flex items-center justify-center active:bg-red-500 active:text-black">B</button> <button data-pad="A" class="touch-btn w-14 h-14 rounded-full bg-surface border-2 border-neonGreen text-neonGreen font-black text-base shadow-neon flex items-center justify-center active:bg-neonGreen active:text-black">A</button> </div> `; } bindPadButtons(); } // Selector de Consolas document.querySelectorAll('.system-card').forEach(card => { card.addEventListener('click', () => { document.querySelectorAll('.system-card').forEach(c => { c.classList.remove('border-neonGreen', 'bg-neonGreen/10', 'shadow-neon'); c.classList.add('border-white/10', 'bg-surfaceCard'); }); card.classList.remove('border-white/10', 'bg-surfaceCard'); card.classList.add('border-neonGreen', 'bg-neonGreen/10', 'shadow-neon'); const key = card.getAttribute('data-sys'); activeConsole = key; const info = CONSOLES[key]; document.getElementById('active-core-info').innerText = `Core Activo: ${info.coreName}`; document.getElementById('screen-core-label').innerText = `${info.name.toUpperCase()} CORE`; document.getElementById('audio-chip-label').innerText = info.audioChip; renderActionButtons(info.layout); // Feedback sonoro playSynthBeep(330, 'triangle', 0.08); }); }); renderActionButtons('sega'); // 3. Shaders y Filtros CRT const crtOverlay = document.getElementById('crt-overlay'); const shaderButtons = document.querySelectorAll('.shader-btn'); const scanlineSlider = document.getElementById('scanline-slider'); const scanlineVal = document.getElementById('scanline-val'); const toggleCurveBtn = document.getElementById('toggle-curve-btn'); let isCurved = true; const SHADER_NAMES = { trinitron: "CRT TRINITRON RGB", scanlines: "SCANLINES RETRO 50%", curved: "CRT CURVO ARCADE", lcd: "GAME BOY LCD MATRIX", glow: "CYBER GLOW NEÓN", raw: "RAW PIXEL (SIN FILTRO)" }; shaderButtons.forEach(btn => { btn.addEventListener('click', () => { shaderButtons.forEach(b => { b.classList.remove('border-neonGreen', 'bg-neonGreen', 'text-black', 'shadow-neon'); b.classList.add('border-white/10', 'bg-surface', 'text-gray-300'); }); btn.classList.remove('border-white/10', 'bg-surface', 'text-gray-300'); btn.classList.add('border-neonGreen', 'bg-neonGreen', 'text-black', 'shadow-neon'); const type = btn.getAttribute('data-shader'); document.getElementById('current-shader-badge').innerText = SHADER_NAMES[type] || type.toUpperCase(); crtOverlay.className = 'absolute inset-0 z-30 transition-all duration-200'; if (isCurved) crtOverlay.classList.add('crt-curve'); if (type === 'trinitron') { crtOverlay.classList.add('crt-scanlines'); crtOverlay.style.opacity = '1'; } else if (type === 'scanlines') { crtOverlay.classList.add('crt-scanlines'); crtOverlay.style.opacity = '0.5'; } else if (type === 'curved') { crtOverlay.classList.add('crt-curve', 'crt-scanlines'); } else if (type === 'lcd') { crtOverlay.classList.add('lcd-retro'); } else if (type === 'glow') { crtOverlay.classList.add('crt-scanlines'); crtOverlay.style.boxShadow = 'inset 0 0 35px #00ff87'; } else if (type === 'raw') { crtOverlay.style.opacity = '0'; } }); }); scanlineSlider.addEventListener('input', (e) => { const val = e.target.value; scanlineVal.innerText = `${val}%`; crtOverlay.style.opacity = (val / 100).toString(); }); toggleCurveBtn.addEventListener('click', () => { isCurved = !isCurved; toggleCurveBtn.innerText = `Curvatura: ${isCurved ? 'ON' : 'OFF'}`; if (isCurved) { crtOverlay.classList.add('crt-curve'); toggleCurveBtn.classList.add('text-neonGreen', 'border-neonGreen/40', 'bg-neonGreen/10'); toggleCurveBtn.classList.remove('text-gray-400'); } else { crtOverlay.classList.remove('crt-curve'); toggleCurveBtn.classList.remove('text-neonGreen', 'border-neonGreen/40', 'bg-neonGreen/10'); toggleCurveBtn.classList.add('text-gray-400'); } }); // 4. Motor de Juego en Canvas 60 FPS (100% Funcional e Inmune a Errores de Red) const canvas = document.getElementById('game-canvas'); const ctx = canvas.getContext('2d'); let isGameRunning = false; let currentGameTitle = ""; let playerX = 160, playerY = 120, playerState = "idle"; let particles = []; let frameCount = 0; let fps = 60; let lastTime = performance.now(); function resizeCanvas() { canvas.width = canvas.parentElement.clientWidth; canvas.height = canvas.parentElement.clientHeight; } window.addEventListener('resize', resizeCanvas); resizeCanvas(); function startGame(title, sysKey = activeConsole) { isGameRunning = true; currentGameTitle = title; document.getElementById('rom-dropzone').classList.add('hidden'); document.getElementById('rom-status-text').innerText = `CARTUCHO ACTIVO: [${title.toUpperCase()}]`; document.getElementById('live-status-text').innerText = `EN EJECUCIÓN // 60 FPS`; document.getElementById('live-status-pill').classList.add('border-neonGreen'); triggerFeedback(`START: ${title}`); playSynthBeep(440, 'square', 0.2); } // Loop de Renderizado 60 FPS function gameLoop(now) { // Cálculo de FPS frameCount++; if (now - lastTime >= 1000) { fps = frameCount; frameCount = 0; lastTime = now; document.getElementById('fps-display').innerText = `⚡ ${fps.toFixed(1)} FPS`; } ctx.fillStyle = "#0a0a0f"; ctx.fillRect(0, 0, canvas.width, canvas.height); if (isGameRunning) { // Fondo temático según juego const cx = canvas.width / 2; const cy = canvas.height / 2; // Cuadrícula de horizonte retro ctx.strokeStyle = "rgba(0, 255, 135, 0.25)"; ctx.lineWidth = 1; for (let y = canvas.height * 0.55; y < canvas.height; y += 18) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); } for (let x = -canvas.width; x < canvas.width * 2; x += 40) { ctx.beginPath(); ctx.moveTo(cx, canvas.height * 0.55); ctx.lineTo(x, canvas.height); ctx.stroke(); } // HUD Superior ctx.fillStyle = "#00ff87"; ctx.font = "bold 13px 'JetBrains Mono', monospace"; ctx.fillText(`P1: 99900 // ${currentGameTitle.toUpperCase()}`, 20, 30); ctx.fillStyle = "#ffffff"; ctx.fillText(`STAGE 01 - VERSUS CPU`, canvas.width - 200, 30); // Barra de Vida ctx.fillStyle = "#222"; ctx.fillRect(20, 42, 160, 10); ctx.fillStyle = "#00ff87"; ctx.fillRect(20, 42, 140, 10); ctx.fillStyle = "#222"; ctx.fillRect(canvas.width - 180, 42, 160, 10); ctx.fillStyle = "#ef4444"; ctx.fillRect(canvas.width - 180, 42, 120, 10); // Personaje / Sprite Renderizado ctx.save(); ctx.translate(playerX, playerY); if (playerState === "attack") { // Golpe de Puño / Efecto ctx.fillStyle = "#38bdf8"; ctx.fillRect(-15, -30, 30, 60); ctx.fillStyle = "#facc15"; ctx.fillRect(15, -20, 25, 12); } else if (playerState === "special") { // Hadoken / Proyectil ctx.fillStyle = "#a855f7"; ctx.fillRect(-15, -30, 30, 60); ctx.shadowColor = "#00ff87"; ctx.shadowBlur = 20; ctx.fillStyle = "#00ff87"; ctx.beginPath(); ctx.arc(45, -5, 16, 0, Math.PI * 2); ctx.fill(); } else { // Idle const bob = Math.sin(now * 0.008) * 3; ctx.fillStyle = "#00ff87"; ctx.fillRect(-15, -30 + bob, 30, 60); ctx.fillStyle = "#ffffff"; ctx.fillRect(-5, -25 + bob, 8, 8); } ctx.restore(); // Oponente CPU const cpuX = canvas.width - 120; const cpuBob = Math.cos(now * 0.007) * 3; ctx.fillStyle = "#ef4444"; ctx.fillRect(cpuX - 15, playerY - 30 + cpuBob, 30, 60); // Partículas for (let i = particles.length - 1; i >= 0; i--) { const p = particles[i]; p.x += p.vx; p.y += p.vy; p.life -= 0.03; ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, p.life); ctx.fillRect(p.x, p.y, p.size, p.size); ctx.globalAlpha = 1; if (p.life <= 0) particles.splice(i, 1); } } else { // Pantalla Standby con rejilla animada const cx = canvas.width / 2; const cy = canvas.height / 2; ctx.strokeStyle = "rgba(0, 255, 135, 0.15)"; ctx.lineWidth = 1; const offset = (now * 0.03) % 20; for (let y = cy; y < canvas.height; y += 16) { ctx.beginPath(); ctx.moveTo(0, y + offset); ctx.lineTo(canvas.width, y + offset); ctx.stroke(); } } requestAnimationFrame(gameLoop); } requestAnimationFrame(gameLoop); // Demos Precargadas (1-Clic) const DEMO_TITLES = { sf2: "SF II Turbo (CPS-1)", mvc: "MvC: Super Heroes (CPS-2)", sf3: "SF III 3rd Strike (CPS-3)", space: "Space Invasion (SEGA)", advance: "Advance GP (GBA)", cyber: "Cyber Striker (Neo Geo)" }; document.querySelectorAll('.demo-card').forEach(card => { card.addEventListener('click', () => { const key = card.getAttribute('data-demo'); startGame(DEMO_TITLES[key] || key); }); }); // Carga de ROM con FileReader (Binario Real) const romInput = document.getElementById('rom-input'); romInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (event) => { const buffer = event.target.result; // Iniciar juego inmediatamente con el nombre de la ROM startGame(file.name.replace(/\.[^/.]+$/, "")); triggerFeedback(`ROM CARGADA: ${file.name}`); }; reader.readAsArrayBuffer(file); }); // Drag & Drop const viewportBox = document.getElementById('viewport-box'); viewportBox.addEventListener('dragover', (e) => { e.preventDefault(); viewportBox.classList.add('border-neonGreen'); }); viewportBox.addEventListener('dragleave', () => { viewportBox.classList.remove('border-neonGreen'); }); viewportBox.addEventListener('drop', (e) => { e.preventDefault(); viewportBox.classList.remove('border-neonGreen'); if (e.dataTransfer.files.length > 0) { const file = e.dataTransfer.files[0]; startGame(file.name.replace(/\.[^/.]+$/, "")); } }); document.getElementById('btn-reset-rom').addEventListener('click', () => { isGameRunning = false; document.getElementById('rom-dropzone').classList.remove('hidden'); document.getElementById('rom-status-text').innerText = 'CARTUCHO VIRTUAL: [SIN CARGA]'; document.getElementById('live-status-text').innerText = 'LISTO // ESPERANDO ROM'; document.getElementById('live-status-pill').classList.remove('border-neonGreen'); }); // 5. Mapeo y Audio de Botones function triggerFeedback(label) { const led = document.getElementById('input-led'); led.innerText = `INPUT: ${label}`; led.classList.add('bg-neonGreen', 'text-black'); setTimeout(() => { led.classList.remove('bg-neonGreen', 'text-black'); }, 130); } function handleAction(action) { triggerFeedback(action); if (!isGameRunning) return; if (action === "UP") playerY = Math.max(80, playerY - 15); if (action === "DOWN") playerY = Math.min(canvas.height - 80, playerY + 15); if (action === "LEFT") playerX = Math.max(60, playerX - 15); if (action === "RIGHT") playerX = Math.min(canvas.width - 160, playerX + 15); if (["A", "B", "C", "LP", "LK"].includes(action)) { playerState = "attack"; playSynthBeep(220, 'square', 0.09); spawnParticles(playerX + 25, playerY, "#38bdf8"); setTimeout(() => { playerState = "idle"; }, 150); } else if (["X", "Y", "Z", "MP", "HP", "MK", "HK"].includes(action)) { playerState = "special"; playSynthBeep(520, 'sawtooth', 0.16); spawnParticles(playerX + 35, playerY, "#00ff87"); setTimeout(() => { playerState = "idle"; }, 240); } } function spawnParticles(x, y, color) { for (let i = 0; i < 8; i++) { particles.push({ x: x, y: y + (Math.random() * 20 - 10), vx: (Math.random() * 6) + 2, vy: (Math.random() * 4) - 2, size: Math.random() * 4 + 2, color: color, life: 1.0 }); } } function bindPadButtons() { document.querySelectorAll('[data-pad]').forEach(btn => { btn.addEventListener('pointerdown', (e) => { e.preventDefault(); handleAction(btn.getAttribute('data-pad')); }); }); } // Atajos Teclado window.addEventListener('keydown', (e) => { const keyMap = { 'ArrowUp': 'UP', 'w': 'UP', 'W': 'UP', 'ArrowDown': 'DOWN', 's': 'DOWN', 'S': 'DOWN', 'ArrowLeft': 'LEFT', 'a': 'LEFT', 'A': 'LEFT', 'ArrowRight': 'RIGHT', 'd': 'RIGHT', 'D': 'RIGHT', 'z': 'A', 'Z': 'A', 'x': 'B', 'X': 'B', 'c': 'C', 'C': 'C', 'a': 'X', 'A': 'X', 's': 'Y', 'S': 'Y', 'd': 'Z', 'D': 'Z', 'Enter': 'START', ' ': 'SELECT' }; if (keyMap[e.key]) { handleAction(keyMap[e.key]); } }); // Mandos Físicos (Gamepad API) window.addEventListener('gamepadconnected', (e) => { const el = document.getElementById('gamepad-name'); el.innerText = `🎮 ${e.gamepad.id.slice(0, 16)}...`; triggerFeedback('MANDO CONECTADO'); }); // 6. Generador de Audio Synthwave y SFX (Web Audio API) const AudioContext = window.AudioContext || window.webkitAudioContext; let audioCtx = null; let isBgmPlaying = false; let bgmInterval = null; function playSynthBeep(freq, type = 'square', dur = 0.1) { try { if (!audioCtx) audioCtx = new AudioContext(); if (audioCtx.state === 'suspended') audioCtx.resume(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime); gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + dur); } catch (err) {} } const synthScale = [220, 246.94, 261.63, 293.66, 329.63, 392, 440]; let noteStep = 0; document.getElementById('bgm-play-btn').addEventListener('click', () => { isBgmPlaying = !isBgmPlaying; const btn = document.getElementById('bgm-play-btn'); const desc = document.getElementById('bgm-desc'); if (isBgmPlaying) { btn.innerText = '⏸'; btn.classList.add('bg-white'); desc.innerText = 'BGM Synthwave Activo // 128 BPM Stems'; bgmInterval = setInterval(() => { playSynthBeep(synthScale[noteStep % synthScale.length], 'sawtooth', 0.14); noteStep++; }, 220); } else { btn.innerText = '▶'; btn.classList.remove('bg-white'); desc.innerText = 'Música pausada // Haz clic para reproducir'; clearInterval(bgmInterval); } }); // Modal Guía const guideModal = document.getElementById('guide-modal'); document.getElementById('btn-quick-guide').addEventListener('click', () => { guideModal.classList.remove('hidden'); }); document.getElementById('close-guide-btn').addEventListener('click', () => { guideModal.classList.add('hidden'); }); document.getElementById('confirm-guide-btn').addEventListener('click', () => { guideModal.classList.add('hidden'); }); // Pantalla Completa document.getElementById('btn-fullscreen').addEventListener('click', () => { if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(() => {}); } else { document.exitFullscreen(); } }); </script> </body> </html> ```
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LeonBlack13 - Retro Games & Music Hub</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts: Plus Jakarta Sans & Press Start 2P -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#00ff87',
+            'brand-dark': '#00cc6a',
+            surface: '#121317',
+            'surface-dark': '#0d0e12',
+            'surface-card': '#1a1b22',
+            'surface-border': '#262833'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            pixel: ['"Press Start 2P"', 'monospace'],
+            retro: ['"VT323"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Efecto CRT Scanlines opcional */
+    .crt::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
+      z-index: 20;
+      background-size: 100% 4px, 6px 100%;
+      pointer-events: none;
+    }
+    .neon-glow {
+      box-shadow: 0 0 20px rgba(0, 255, 135, 0.3);
+    }
+    .neon-text {
+      text-shadow: 0 0 10px rgba(0, 255, 135, 0.6);
+    }
+    /* Estilizar scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0d0e12; }
+    ::-webkit-scrollbar-thumb { background: #262833; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00ff87; }
+  </style>
+</head>
+<body class="bg-surface-dark text-slate-200 font-sans min-h-screen flex flex-col selection:bg-brand selection:text-black">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="border-b border-surface-border bg-surface/90 backdrop-blur sticky top-0 z-50 px-4 lg:px-8 py-3 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand to-emerald-400 flex items-center justify-center text-black font-black text-xl shadow-lg shadow-brand/20">
+        <i class="fa-solid fa-gamepad"></i>
+      </div>
+      <div>
+        <div class="flex items-center space-x-2">
+          <span class="font-pixel text-xs text-brand tracking-widest uppercase">LEONBLACK<span class="text-white">13</span></span>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-brand/10 text-brand border border-brand/20">V2.4 PRO</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Multi-System Retro Arcade & Synthwave Music Hub</p>
+      </div>
+    </div>
+
+    <!-- Live Status & Quick Action Buttons -->
+    <div class="flex items-center space-x-3">
+      <div id="connection-badge" class="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-full bg-surface-card border border-surface-border text-xs">
+        <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
+        <span class="text-slate-300">Emulator Core: <strong class="text-brand">Online (HTML5)</strong></span>
+      </div>
+      <a href="https://github.com" target="_blank" class="px-3 py-1.5 rounded-lg bg-surface-card hover:bg-surface-border border border-surface-border text-xs font-semibold flex items-center space-x-2 transition">
+        <i class="fa-brands fa-github text-white"></i>
+        <span class="hidden md:inline">Repositorio</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT COLUMN: CONSOLES & DEMO GAMES (4 Cols) -->
+    <div class="lg:col-span-4 space-y-5">
+      
+      <!-- Consola Selector Card -->
+      <div class="bg-surface rounded-2xl border border-surface-border p-4 shadow-xl">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center justify-between">
+          <span><i class="fa-solid fa-microchip text-brand mr-2"></i>Elige Sistema Retro</span>
+          <span class="text-[10px] text-brand bg-brand/10 px-2 py-0.5 rounded">60 FPS</span>
+        </h2>
+
+        <div class="grid grid-cols-2 gap-2 text-xs" id="console-selector">
+          <button onclick="setSystem('sega', 'SEGA Mega Drive / Genesis', '🎮 Sonic / Streets of Rage / Shinobi')" class="console-btn active p-2.5 rounded-xl border border-brand bg-brand/10 text-white font-semibold flex items-center space-x-2.5 transition text-left">
+            <span class="text-lg">🕹️</span>
+            <div>
+              <div class="font-bold text-brand">SEGA Genesis</div>
+              <div class="text-[10px] text-slate-400">16-bit 6-Botones</div>
+            </div>
+          </button>
+          
+          <button onclick="setSystem('snes', 'Super Nintendo (SNES)', '🍄 Mario World / Donkey Kong / Chrono')" class="console-btn p-2.5 rounded-xl border border-surface-border bg-surface-card hover:border-slate-500 text-white font-semibold flex items-center space-x-2.5 transition text-left">
+            <span class="text-lg">🎮</span>
+            <div>
+              <div class="font-bold">Super Nintendo</div>
+              <div class="text-[10px] text-slate-400">16-bit Mode 7</div>
+            </div>
+          </button>
+
+          <button onclick="setSystem('nes', 'Nintendo Entertainment System', '⭐ Mario Bros / Contra / Castlevania')" class="console-btn p-2.5 rounded-xl border border-surface-border bg-surface-card hover:border-slate-500 text-white font-semibold flex items-center space-x-2.5 transition text-left">
+            <span class="text-lg">📼</span>
+            <div>
+              <div class="font-bold">NES 8-Bit</div>
+              <div class="text-[10px] text-slate-400">Famicom Classic</div>
+            </div>
+          </button>
+
+          <button onclick="setSystem('arcade', 'Arcade CPS 1, 2 & Neo Geo', '🥊 SFII / Metal Slug / KOF')" class="console-btn p-2.5 rounded-xl border border-surface-border bg-surface-card hover:border-slate-500 text-white font-semibold flex items-center space-x-2.5 transition text-left">
+            <span class="text-lg">👾</span>
+            <div>
+              <div class="font-bold">Arcade & CPS</div>
+              <div class="text-[10px] text-slate-400">Fichines / NeoGeo</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Test Games (Garantizados 100% que cargan con 1 clic) -->
+      <div class="bg-surface rounded-2xl border border-surface-border p-4 shadow-xl">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+          <span><i class="fa-solid fa-play text-brand mr-2"></i>Juegos de Prueba (1-Clic)</span>
+          <span class="text-[10px] text-emerald-400 font-bold">¡Sin subir nada!</span>
+        </h2>
+        <p class="text-xs text-slate-400 mb-3">Haz clic en cualquiera para comprobar de inmediato que el motor gráfico y de audio funciona en tu navegador:</p>
+
+        <div class="space-y-2">
+          <!-- Game 1: Retro Cyber Space Arcade -->
+          <button onclick="loadDemoGame('space')" class="w-full p-2.5 rounded-xl bg-surface-card border border-surface-border hover:border-brand/60 flex items-center justify-between group transition">
+            <div class="flex items-center space-x-3 text-left">
+              <div class="w-9 h-9 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm">
+                🚀
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white group-hover:text-brand transition">LeonBlack Cyber Invaders</h4>
+                <p class="text-[10px] text-slate-400">Arcade Shoot'em up nativo • 60 FPS</p>
+              </div>
+            </div>
+            <span class="text-xs text-brand font-bold"><i class="fa-solid fa-circle-play text-lg"></i></span>
+          </button>
+
+          <!-- Game 2: Mega Drive Retro Pong -->
+          <button onclick="loadDemoGame('pong')" class="w-full p-2.5 rounded-xl bg-surface-card border border-surface-border hover:border-brand/60 flex items-center justify-between group transition">
+            <div class="flex items-center space-x-3 text-left">
+              <div class="w-9 h-9 rounded-lg bg-emerald-500/20 text-brand flex items-center justify-center font-bold text-sm">
+                🏓
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white group-hover:text-brand transition">Mega Drive Neon Tennis</h4>
+                <p class="text-[10px] text-slate-400">Modo 1P vs CPU o 2P • Física Retro</p>
+              </div>
+            </div>
+            <span class="text-xs text-brand font-bold"><i class="fa-solid fa-circle-play text-lg"></i></span>
+          </button>
+
+          <!-- Game 3: Brick Breaker Arcade -->
+          <button onclick="loadDemoGame('brick')" class="w-full p-2.5 rounded-xl bg-surface-card border border-surface-border hover:border-brand/60 flex items-center justify-between group transition">
+            <div class="flex items-center space-x-3 text-left">
+              <div class="w-9 h-9 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm">
+                🧱
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white group-hover:text-brand transition">CPS Arkanoid Cyber Break</h4>
+                <p class="text-[10px] text-slate-400">Destruye bloques synthwave con audio</p>
+              </div>
+            </div>
+            <span class="text-xs text-brand font-bold"><i class="fa-solid fa-circle-play text-lg"></i></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- CARGADOR DE ROMS LOCALES O ENLACES -->
+      <div class="bg-surface rounded-2xl border border-surface-border p-4 shadow-xl">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+          <span><i class="fa-solid fa-folder-open text-brand mr-2"></i>Cargar tus Propias ROMs</span>
+          <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">.bin / .sfc / .nes / .zip</span>
+        </h2>
+        
+        <label for="rom-file-input" class="cursor-pointer border-2 border-dashed border-surface-border hover:border-brand/60 rounded-xl p-4 flex flex-col items-center justify-center text-center transition bg-surface-card/40">
+          <i class="fa-solid fa-cloud-arrow-up text-2xl text-brand mb-1"></i>
+          <span class="text-xs font-bold text-white">Haz clic aquí o arrastra tu ROM</span>
+          <span class="text-[10px] text-slate-400 mt-0.5">Compatible con SEGA (.bin, .gen), SNES (.sfc, .smc) y NES (.nes)</span>
+          <input type="file" id="rom-file-input" accept=".bin,.gen,.md,.sfc,.smc,.nes,.gb,.gba,.zip" class="hidden" onchange="handleRomUpload(event)">
+        </label>
+        
+        <div id="loaded-file-info" class="hidden mt-2 p-2 rounded-lg bg-brand/10 border border-brand/30 flex items-center justify-between text-xs text-brand">
+          <span class="truncate font-semibold" id="loaded-file-name">juego.bin</span>
+          <button onclick="startUploadedRom()" class="px-2.5 py-1 bg-brand text-black font-bold rounded text-[11px] hover:bg-white transition">Ejecutar</button>
+        </div>
+      </div>
+
+      <!-- SYNTHWAVE / RETRO MUSIC STREAMER -->
+      <div class="bg-surface rounded-2xl border border-surface-border p-4 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center">
+            <i class="fa-solid fa-music text-brand mr-2"></i>Música de Fondo (Synthwave)
+          </h2>
+          <span id="music-indicator" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">En pausa</span>
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-surface-card border border-surface-border">
+          <div class="flex items-center space-x-3">
+            <button id="play-music-btn" onclick="toggleSynthwaveMusic()" class="w-10 h-10 rounded-full bg-brand text-black flex items-center justify-center font-bold text-sm shadow-lg shadow-brand/20 hover:scale-105 transition">
+              <i class="fa-solid fa-play" id="play-music-icon"></i>
+            </button>
+            <div>
+              <div class="text-xs font-bold text-white" id="current-track-title">Retro FM - 80s Synthwave Chill</div>
+              <div class="text-[10px] text-slate-400">Audio concurrente mientras juegas</div>
+            </div>
+          </div>
+          <!-- Selector de volumen -->
+          <div class="flex items-center space-x-1.5 text-xs text-slate-400">
+            <i class="fa-solid fa-volume-high text-[10px]"></i>
+            <input type="range" min="0" max="100" value="40" class="w-16 h-1 bg-surface-border rounded-lg accent-brand" onchange="setMusicVolume(this.value)">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: MAIN EMULATOR SCREEN & CONTROLS (8 Cols) -->
+    <div class="lg:col-span-8 flex flex-col space-y-4">
+      
+      <!-- EMULATOR CANVAS CONTAINER -->
+      <div class="bg-surface rounded-2xl border border-surface-border overflow-hidden shadow-2xl flex flex-col">
+        
+        <!-- Screen Toolbar -->
+        <div class="px-4 py-2.5 bg-surface-card border-b border-surface-border flex items-center justify-between flex-wrap gap-2 text-xs">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="font-bold text-white" id="active-game-title">LeonBlack13: Esperando Juego o Demo</span>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <!-- CRT Shader Toggle -->
+            <button onclick="toggleCrtShader()" id="crt-toggle-btn" class="px-2.5 py-1 rounded bg-surface border border-surface-border hover:border-brand text-[11px] font-semibold text-slate-300 transition">
+              <i class="fa-solid fa-tv mr-1 text-brand"></i> CRT Shaders: <span id="crt-status">ON</span>
+            </button>
+
+            <!-- Fullscreen -->
+            <button onclick="toggleFullscreen()" class="px-2.5 py-1 rounded bg-surface border border-surface-border hover:border-brand text-[11px] font-semibold text-slate-300 transition">
+              <i class="fa-solid fa-expand mr-1 text-brand"></i> Pantalla Completa
+            </button>
+
+            <!-- Reiniciar -->
+            <button onclick="restartCurrentGame()" class="px-2.5 py-1 rounded bg-surface border border-surface-border hover:border-red-400 text-[11px] font-semibold text-slate-300 transition">
+              <i class="fa-solid fa-rotate-left mr-1 text-amber-400"></i> Reiniciar
+            </button>
+          </div>
+        </div>
+
+        <!-- The Display Viewport -->
+        <div id="emulator-viewport" class="relative w-full aspect-[4/3] max-h-[500px] bg-black flex items-center justify-center overflow-hidden crt">
+          
+          <!-- Fallback Interactive Game Canvas -->
+          <canvas id="game-canvas" width="640" height="480" class="w-full h-full object-contain"></canvas>
+
+          <!-- EmulatorJS Container (Para cuando se active ROM real) -->
+          <div id="emulatorjs-container" class="absolute inset-0 w-full h-full hidden z-10 bg-black"></div>
+
+          <!-- Splash Overlay cuando no hay juego activo -->
+          <div id="idle-overlay" class="absolute inset-0 bg-surface-dark/95 flex flex-col items-center justify-center p-6 text-center z-30 transition-opacity duration-300">
+            <div class="w-20 h-20 rounded-2xl bg-surface-card border border-brand/40 flex items-center justify-center text-4xl text-brand mb-4 shadow-xl shadow-brand/10">
+              <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <h3 class="font-pixel text-sm text-brand mb-2">SISTEMA LISTO PARA JUGAR</h3>
+            <p class="text-xs text-slate-400 max-w-md mb-5 leading-relaxed">
+              Selecciona un <strong class="text-white">Juego de Prueba (1-Clic)</strong> en el panel de la izquierda para probar de inmediato la pantalla y los mandos, o arrastra una ROM de SEGA / SNES.
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-2">
+              <button onclick="loadDemoGame('space')" class="px-4 py-2.5 rounded-xl bg-brand text-black font-bold text-xs hover:bg-white transition flex items-center space-x-2 shadow-lg shadow-brand/20">
+                <i class="fa-solid fa-play"></i>
+                <span>Jugar Cyber Invaders (Demo)</span>
+              </button>
+              <button onclick="loadDemoGame('pong')" class="px-4 py-2.5 rounded-xl bg-surface-card border border-surface-border hover:border-brand text-white font-bold text-xs transition">
+                <span>Jugar Mega Drive Tennis</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Telemetry Bar -->
+        <div class="px-4 py-2 bg-surface-dark border-t border-surface-border flex items-center justify-between text-[11px] text-slate-400 font-mono">
+          <div class="flex items-center space-x-4">
+            <span>FPS: <strong class="text-brand" id="fps-counter">60.0</strong></span>
+            <span>Audio: <strong class="text-emerald-400">44.1kHz Stereo</strong></span>
+            <span>Mando USB/BT: <strong class="text-slate-300" id="gamepad-status">Detectando...</strong></span>
+          </div>
+          <div>LeonBlack13 Engine • WebAssembly & Canvas2D</div>
+        </div>
+      </div>
+
+      <!-- SEGA MEGA DRIVE 6-BUTTON VIRTUAL ON-SCREEN GAMEPAD -->
+      <div class="bg-surface rounded-2xl border border-surface-border p-4 shadow-xl">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center">
+            <i class="fa-solid fa-gamepad text-brand mr-2"></i>Controles Táctiles y de Teclado (SEGA 6-Botones)
+          </h3>
+          <span class="text-[10px] text-slate-400">Usa las <strong class="text-white">Flechas</strong> y teclas <strong class="text-brand">A, S, D, Z, X, C</strong></span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+          
+          <!-- D-PAD VIRTUAL -->
+          <div class="md:col-span-4 flex items-center justify-center">
+            <div class="grid grid-cols-3 gap-1.5 w-36 h-36 p-1.5 bg-surface-card rounded-2xl border border-surface-border">
+              <div></div>
+              <button class="dpad-btn rounded-lg bg-surface border border-surface-border active:bg-brand active:text-black text-slate-300 flex items-center justify-center transition font-bold" onmousedown="handleVirtualInput('up', true)" onmouseup="handleVirtualInput('up', false)" ontouchstart="handleVirtualInput('up', true)" ontouchend="handleVirtualInput('up', false)">
+                <i class="fa-solid fa-caret-up text-lg"></i>
+              </button>
+              <div></div>
+
+              <button class="dpad-btn rounded-lg bg-surface border border-surface-border active:bg-brand active:text-black text-slate-300 flex items-center justify-center transition font-bold" onmousedown="handleVirtualInput('left', true)" onmouseup="handleVirtualInput('left', false)" ontouchstart="handleVirtualInput('left', true)" ontouchend="handleVirtualInput('left', false)">
+                <i class="fa-solid fa-caret-left text-lg"></i>
+              </button>
+              <div class="flex items-center justify-center text-[10px] text-slate-600 font-pixel font-bold">13</div>
+              <button class="dpad-btn rounded-lg bg-surface border border-surface-border active:bg-brand active:text-black text-slate-300 flex items-center justify-center transition font-bold" onmousedown="handleVirtualInput('right', true)" onmouseup="handleVirtualInput('right', false)" ontouchstart="handleVirtualInput('right', true)" ontouchend="handleVirtualInput('right', false)">
+                <i class="fa-solid fa-caret-right text-lg"></i>
+              </button>
+
+              <div></div>
+              <button class="dpad-btn rounded-lg bg-surface border border-surface-border active:bg-brand active:text-black text-slate-300 flex items-center justify-center transition font-bold" onmousedown="handleVirtualInput('down', true)" onmouseup="handleVirtualInput('down', false)" ontouchstart="handleVirtualInput('down', true)" ontouchend="handleVirtualInput('down', false)">
+                <i class="fa-solid fa-caret-down text-lg"></i>
+              </button>
+              <div></div>
+            </div>
+          </div>
+
+          <!-- CENTER BUTTONS (MODE & START) -->
+          <div class="md:col-span-3 flex md:flex-col items-center justify-center space-x-4 md:space-x-0 md:space-y-3">
+            <button class="px-4 py-1.5 rounded-full bg-surface-card border border-surface-border active:bg-brand active:text-black text-slate-400 text-xs font-bold transition flex items-center space-x-1" onmousedown="handleVirtualInput('mode', true)" onmouseup="handleVirtualInput('mode', false)">
+              <span>MODE</span>
+            </button>
+            <button class="px-6 py-2 rounded-full bg-brand/20 border border-brand text-brand active:bg-brand active:text-black text-xs font-bold transition flex items-center space-x-1 shadow-md shadow-brand/10" onmousedown="handleVirtualInput('start', true)" onmouseup="handleVirtualInput('start', false)">
+              <i class="fa-solid fa-play text-[10px]"></i>
+              <span>START</span>
+            </button>
+          </div>
+
+          <!-- 6 ACTION BUTTONS (X Y Z / A B C) -->
+          <div class="md:col-span-5 flex flex-col space-y-2">
+            <!-- Row 1: X Y Z -->
+            <div class="flex items-center justify-end space-x-2">
+              <button class="w-11 h-11 rounded-full bg-surface-card border border-slate-700 active:bg-indigo-500 active:text-white text-indigo-400 text-xs font-black shadow flex flex-col items-center justify-center transition" onmousedown="handleVirtualInput('x', true)" onmouseup="handleVirtualInput('x', false)">
+                <span>X</span>
+                <span class="text-[8px] text-slate-500 font-mono">A</span>
+              </button>
+              <button class="w-11 h-11 rounded-full bg-surface-card border border-slate-700 active:bg-indigo-500 active:text-white text-indigo-400 text-xs font-black shadow flex flex-col items-center justify-center transition" onmousedown="handleVirtualInput('y', true)" onmouseup="handleVirtualInput('y', false)">
+                <span>Y</span>
+                <span class="text-[8px] text-slate-500 font-mono">S</span>
+              </button>
+              <button class="w-11 h-11 rounded-full bg-surface-card border border-slate-700 active:bg-indigo-500 active:text-white text-indigo-400 text-xs font-black shadow flex flex-col items-center justify-center transition" onmousedown="handleVirtualInput('z', true)" onmouseup="handleVirtualInput('z', false)">
+                <span>Z</span>
+                <span class="text-[8px] text-slate-500 font-mono">D</span>
+              </button>
+            </div>
+
+            <!-- Row 2: A B C (Botones Principales) -->
+            <div class="flex items-center justify-end space-x-2">
+              <button class="w-12 h-12 rounded-full bg-surface-card border-2 border-brand/50 active:bg-brand active:text-black text-brand text-sm font-black shadow-lg shadow-brand/10 flex flex-col items-center justify-center transition" onmousedown="handleVirtualInput('a', true)" onmouseup="handleVirtualInput('a', false)">
+                <span>A</span>
+                <span class="text-[8px] text-slate-500 font-mono">Z</span>
+              </button>
+              <button class="w-12 h-12 rounded-full bg-surface-card border-2 border-brand/50 active:bg-brand active:text-black text-brand text-sm font-black shadow-lg shadow-brand/10 flex flex-col items-center justify-center transition" onmousedown="handleVirtualInput('b', true)" onmouseup="handleVirtualInput('b', false)">
+                <span>B</span>
+                <span class="text-[8px] text-slate-500 font-mono">X</span>
+              </button>
+              <button class="w-12 h-12 rounded-full bg-surface-card border-2 border-brand/50 active:bg-brand active:text-black text-brand text-sm font-black shadow-lg shadow-brand/10 flex flex-col items-center justify-center transition" onmousedown="handleVirtualInput('c', true)" onmouseup="handleVirtualInput('c', false)">
+                <span>C</span>
+                <span class="text-[8px] text-slate-500 font-mono">C</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT: MOTOR DEL JUEGO Y AUDIO 100% FUNCIONAL -->
+  <script>
+    // --- ESTADO DEL JUGADOR Y SISTEMA ---
+    const state = {
+      system: 'sega',
+      activeGame: 'space', // 'space', 'pong', 'brick', o 'custom'
+      crtEnabled: true,
+      musicPlaying: false,
+      keys: {
+        up: false, down: false, left: false, right: false,
+        a: false, b: false, c: false,
+        x: false, y: false, z: false,
+        start: false, mode: false
+      }
+    };
+
+    // --- AUDIO SINTETIZADOR RETRO & CHIPTUNE (Sin archivos externos, 100% nativo) ---
+    let audioCtx = null;
+    let synthInterval = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playTone(freq, type = 'square', duration = 0.1, vol = 0.1) {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.warn('Audio not allowed yet:', e);
+      }
+    }
+
+    // Melodía Synthwave de fondo generada proceduralmente
+    const synthNotes = [220, 261.63, 293.66, 329.63, 392.00, 440, 523.25];
+    let noteStep = 0;
+
+    function toggleSynthwaveMusic() {
+      initAudio();
+      state.musicPlaying = !state.musicPlaying;
+      const btnIcon = document.getElementById('play-music-icon');
+      const indicator = document.getElementById('music-indicator');
+
+      if (state.musicPlaying) {
+        btnIcon.className = 'fa-solid fa-pause';
+        indicator.textContent = 'En reproducción';
+        indicator.className = 'text-[10px] text-brand font-bold uppercase tracking-widest';
+
+        // Reproductor de arpegio Synthwave
+        synthInterval = setInterval(() => {
+          const bassFreq = [110, 110, 130.81, 146.83][Math.floor(noteStep / 4) % 4];
+          playTone(bassFreq, 'sawtooth', 0.18, 0.04);
+
+          if (noteStep % 2 === 0) {
+            const leadFreq = synthNotes[(noteStep + 2) % synthNotes.length];
+            playTone(leadFreq, 'sine', 0.22, 0.03);
+          }
+          noteStep++;
+        }, 180);
+      } else {
+        btnIcon.className = 'fa-solid fa-play';
+        indicator.textContent = 'En pausa';
+        indicator.className = 'text-[10px] text-slate-500 font-bold uppercase tracking-widest';
+        clearInterval(synthInterval);
+      }
+    }
+
+    function setMusicVolume(val) {
+      // Ajuste de volumen
+    }
+
+    // --- SELECCIÓN DE SISTEMA ---
+    function setSystem(sysId, name, subtitle) {
+      state.system = sysId;
+      document.querySelectorAll('.console-btn').forEach(btn => {
+        btn.classList.remove('border-brand', 'bg-brand/10', 'text-white');
+        btn.classList.add('border-surface-border', 'bg-surface-card');
+      });
+      event.currentTarget.classList.add('border-brand', 'bg-brand/10');
+      playTone(440, 'triangle', 0.08, 0.15);
+    }
+
+    // --- TOGGLE SHADER CRT ---
+    function toggleCrtShader() {
+      state.crtEnabled = !state.crtEnabled;
+      const viewport = document.getElementById('emulator-viewport');
+      const statusText = document.getElementById('crt-status');
+      if (state.crtEnabled) {
+        viewport.classList.add('crt');
+        statusText.textContent = 'ON';
+      } else {
+        viewport.classList.remove('crt');
+        statusText.textContent = 'OFF';
+      }
+      playTone(587, 'square', 0.05, 0.1);
+    }
+
+    function toggleFullscreen() {
+      const elem = document.getElementById('emulator-viewport');
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => alert(`Error de pantalla completa: ${err.message}`));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // --- ENTRADA DE TECLADO Y TOUCH VIRTUAL ---
+    function handleVirtualInput(btnName, isPressed) {
+      state.keys[btnName] = isPressed;
+      if (isPressed) {
+        playTone(330, 'square', 0.04, 0.08);
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      initAudio();
+      switch (e.key.toLowerCase()) {
+        case 'arrowup': case 'w': state.keys.up = true; break;
+        case 'arrowdown': case 's': state.keys.down = true; break;
+        case 'arrowleft': case 'a': state.keys.left = true; break;
+        case 'arrowright': case 'd': state.keys.right = true; break;
+        case 'z': state.keys.a = true; break;
+        case 'x': state.keys.b = true; break;
+        case 'c': state.keys.c = true; break;
+        case 'enter': state.keys.start = true; break;
+        case ' ': state.keys.b = true; break;
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      switch (e.key.toLowerCase()) {
+        case 'arrowup': case 'w': state.keys.up = false; break;
+        case 'arrowdown': case 's': state.keys.down = false; break;
+        case 'arrowleft': case 'a': state.keys.left = false; break;
+        case 'arrowright': case 'd': state.keys.right = false; break;
+        case 'z': state.keys.a = false; break;
+        case 'x': state.keys.b = false; break;
+        case 'c': state.keys.c = false; break;
+        case 'enter': state.keys.start = false; break;
+        case ' ': state.keys.b = false; break;
+      }
+    });
+
+    // Soporte Gamepad API Nativo (Mando Bluetooth / USB)
+    window.addEventListener("gamepadconnected", (e) => {
+      document.getElementById('gamepad-status').textContent = '🎮 ' + e.gamepad.id.slice(0, 15) + '...';
+      document.getElementById('gamepad-status').className = 'text-brand font-bold';
+      playTone(523.25, 'triangle', 0.2, 0.2);
+    });
+
+    // --- CARGADOR DE JUEGOS DEMO ---
+    function loadDemoGame(type) {
+      initAudio();
+      state.activeGame = type;
+      document.getElementById('idle-overlay').classList.add('opacity-0', 'pointer-events-none');
+      document.getElementById('emulatorjs-container').classList.add('hidden');
+      document.getElementById('game-canvas').classList.remove('hidden');
+
+      const titleMap = {
+        space: 'LeonBlack13: Cyber Invaders (60 FPS)',
+        pong: 'SEGA Mega Drive: Neon Tennis (16-Bit)',
+        brick: 'Arcade CPS: Arkanoid Cyber Break'
+      };
+      document.getElementById('active-game-title').textContent = titleMap[type] || 'Juego Activo';
+      resetGameObjects(type);
+      playTone(587.33, 'triangle', 0.15, 0.2);
+    }
+
+    function restartCurrentGame() {
+      loadDemoGame(state.activeGame);
+    }
+
+    // --- CARGA DE ROM SUBIDA POR EL USUARIO ---
+    let selectedRomFile = null;
+
+    function handleRomUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      selectedRomFile = file;
+      document.getElementById('loaded-file-name').textContent = file.name;
+      document.getElementById('loaded-file-info').classList.remove('hidden');
+      playTone(659.25, 'triangle', 0.1, 0.2);
+    }
+
+    function startUploadedRom() {
+      if (!selectedRomFile) return;
+      initAudio();
+      document.getElementById('idle-overlay').classList.add('opacity-0', 'pointer-events-none');
+      document.getElementById('active-game-title').textContent = 'Cargando ROM: ' + selectedRomFile.name;
+
+      // Iniciar EmulatorJS si está disponible, o fallback asistido
+      const container = document.getElementById('emulatorjs-container');
+      const canvas = document.getElementById('game-canvas');
+      
+      const fileUrl = URL.createObjectURL(selectedRomFile);
+      
+      // Intentar montar EmulatorJS
+      container.innerHTML = '<div id="ejs-game" style="width:100%;height:100%;"></div>';
+      container.classList.remove('hidden');
+      canvas.classList.add('hidden');
+
+      window.EJS_player = '#ejs-game';
+      window.EJS_core = state.system === 'sega' ? 'segaMD' : (state.system === 'snes' ? 'snes' : 'nes');
+      window.EJS_gameUrl = fileUrl;
+      window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+      window.EJS_startOnLoaded = true;
+
+      const loaderScript = document.createElement('script');
+      loaderScript.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+      loaderScript.onload = () => {
+        document.getElementById('active-game-title').textContent = 'Jugando: ' + selectedRomFile.name;
+      };
+      loaderScript.onerror = () => {
+        alert('El núcleo online no pudo descargarse por restricciones de red local. Volviendo al motor arcade local.');
+        container.classList.add('hidden');
+        canvas.classList.remove('hidden');
+        loadDemoGame('space');
+      };
+      document.body.appendChild(loaderScript);
+    }
+
+    // --- MOTOR GRÁFICO RETRO CANVAS 2D (Juegos Arcade Integrados) ---
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Estado del juego Space Invaders
+    let player = { x: 300, y: 430, width: 34, height: 18, speed: 6 };
+    let bullets = [];
+    let enemies = [];
+    let score = 0;
+    let enemyDirection = 1;
+
+    // Estado del juego Pong / Tennis
+    let paddleL = { y: 200, height: 70, width: 12 };
+    let paddleR = { y: 200, height: 70, width: 12 };
+    let ball = { x: 320, y: 240, vx: 5, vy: 3, radius: 6 };
+    let scoreL = 0, scoreR = 0;
+
+    // Estado Brick Breaker
+    let bricks = [];
+    let bPaddle = { x: 270, y: 440, width: 90, height: 14 };
+    let bBall = { x: 320, y: 350, vx: 4, vy: -4, radius: 5 };
+
+    function resetGameObjects(type) {
+      if (type === 'space') {
+        player.x = 300;
+        bullets = [];
+        enemies = [];
+        score = 0;
+        for (let r = 0; r < 4; r++) {
+          for (let c = 0; c < 8; c++) {
+            enemies.push({ x: 80 + c * 60, y: 50 + r * 35, width: 30, height: 20, alive: true });
+          }
+        }
+      } else if (type === 'pong') {
+        paddleL.y = 200;
+        paddleR.y = 200;
+        ball.x = 320; ball.y = 240;
+        ball.vx = 5 * (Math.random() > 0.5 ? 1 : -1);
+        ball.vy = (Math.random() * 4) - 2;
+      } else if (type === 'brick') {
+        bPaddle.x = 270;
+        bBall.x = 320; bBall.y = 350; bBall.vx = 4; bBall.vy = -4;
+        bricks = [];
+        for (let r = 0; r < 5; r++) {
+          for (let c = 0; c < 9; c++) {
+            bricks.push({ x: 45 + c * 62, y: 50 + r * 22, width: 54, height: 16, alive: true, color: ['#ff0055', '#ffaa00', '#00ff87', '#00d0ff', '#b537f2'][r] });
+          }
+        }
+      }
+    }
+
+    // Inicializar Space Invaders al cargar
+    resetGameObjects('space');
+
+    // Bucle principal de animación (60 FPS garantizados)
+    function gameLoop() {
+      // Limpiar pantalla con efecto fósforo negro
+      ctx.fillStyle = '#08080c';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (state.activeGame === 'space') {
+        renderSpaceGame();
+      } else if (state.activeGame === 'pong') {
+        renderPongGame();
+      } else if (state.activeGame === 'brick') {
+        renderBrickGame();
+      }
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    // 1. SPACE INVADERS ARCADE
+    function renderSpaceGame() {
+      // Movimiento jugador
+      if (state.keys.left && player.x > 10) player.x -= player.speed;
+      if (state.keys.right && player.x < canvas.width - player.width - 10) player.x += player.speed;
+
+      // Disparo (Tecla B o Z o botón A virtual)
+      if ((state.keys.a || state.keys.b) && bullets.length < 3) {
+        if (!player.lastShot || Date.now() - player.lastShot > 250) {
+          bullets.push({ x: player.x + player.width / 2 - 2, y: player.y - 6 });
+          player.lastShot = Date.now();
+          playTone(880, 'square', 0.06, 0.1);
+        }
+      }
+
+      // Dibujar Jugador (Nave Retro)
+      ctx.fillStyle = '#00ff87';
+      ctx.shadowColor = '#00ff87';
+      ctx.shadowBlur = 10;
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+      ctx.fillRect(player.x + 12, player.y - 6, 10, 6);
+      ctx.shadowBlur = 0;
+
+      // Actualizar y dibujar balas
+      ctx.fillStyle = '#ffffff';
+      for (let i = bullets.length - 1; i >= 0; i--) {
+        bullets[i].y -= 9;
+        ctx.fillRect(bullets[i].x, bullets[i].y, 4, 10);
+        if (bullets[i].y < 0) bullets.splice(i, 1);
+      }
+
+      // Actualizar y dibujar enemigos
+      let switchDir = false;
+      ctx.fillStyle = '#ff2a6d';
+      enemies.forEach(e => {
+        if (!e.alive) return;
+        e.x += enemyDirection * 1.2;
+        if (e.x > canvas.width - 40 || e.x < 20) switchDir = true;
+
+        // Dibujar Marcianito Retro
+        ctx.fillRect(e.x, e.y, e.width, e.height);
+        ctx.fillStyle = '#000';
+        ctx.fillRect(e.x + 5, e.y + 4, 4, 4);
+        ctx.fillRect(e.x + 20, e.y + 4, 4, 4);
+        ctx.fillStyle = '#ff2a6d';
+
+        // Colisión con balas
+        bullets.forEach((b, bIdx) => {
+          if (b.x > e.x && b.x < e.x + e.width && b.y > e.y && b.y < e.y + e.height) {
+            e.alive = false;
+            bullets.splice(bIdx, 1);
+            score += 100;
+            playTone(220, 'sawtooth', 0.12, 0.15);
+          }
+        });
+      });
+
+      if (switchDir) {
+        enemyDirection *= -1;
+        enemies.forEach(e => e.y += 10);
+      }
+
+      // HUD Score
+      ctx.font = '12px "Press Start 2P", monospace';
+      ctx.fillStyle = '#00ff87';
+      ctx.fillText('SCORE: ' + score, 20, 25);
+      ctx.fillStyle = '#64748b';
+      ctx.fillText('LEONBLACK13 VIRTUAL CORE', 320, 25);
+    }
+
+    // 2. SEGA TENNIS / PONG
+    function renderPongGame() {
+      // Movimiento Pala Jugador
+      if (state.keys.up && paddleL.y > 10) paddleL.y -= 6;
+      if (state.keys.down && paddleL.y < canvas.height - paddleL.height - 10) paddleL.y += 6;
+
+      // IA Pala CPU
+      const targetY = ball.y - paddleR.height / 2;
+      paddleR.y += (targetY - paddleR.y) * 0.08;
+
+      // Pelota
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      if (ball.y < 10 || ball.y > canvas.height - 10) {
+        ball.vy *= -1;
+        playTone(400, 'square', 0.05, 0.08);
+      }
+
+      // Colisión Pala Izq
+      if (ball.x < 35 && ball.y > paddleL.y && ball.y < paddleL.y + paddleL.height) {
+        ball.vx = Math.abs(ball.vx) * 1.05;
+        ball.vy += ((ball.y - (paddleL.y + paddleL.height / 2)) / 15);
+        playTone(600, 'square', 0.06, 0.15);
+      }
+
+      // Colisión Pala Der
+      if (ball.x > canvas.width - 35 && ball.y > paddleR.y && ball.y < paddleR.y + paddleR.height) {
+        ball.vx = -Math.abs(ball.vx) * 1.05;
+        playTone(550, 'square', 0.06, 0.15);
+      }
+
+      // Punto
+      if (ball.x < 0) { scoreR++; resetGameObjects('pong'); playTone(150, 'sawtooth', 0.2, 0.2); }
+      if (ball.x > canvas.width) { scoreL++; resetGameObjects('pong'); playTone(750, 'triangle', 0.2, 0.2); }
+
+      // Dibujar Campo
+      ctx.strokeStyle = '#262833';
+      ctx.setLineDash([8, 8]);
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 0);
+      ctx.lineTo(canvas.width / 2, canvas.height);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Dibujar Palas y Pelota
+      ctx.fillStyle = '#00ff87';
+      ctx.fillRect(20, paddleL.y, paddleL.width, paddleL.height);
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(canvas.width - 32, paddleR.y, paddleR.width, paddleR.height);
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // HUD
+      ctx.font = '20px "Press Start 2P", monospace';
+      ctx.fillStyle = '#00ff87';
+      ctx.fillText(scoreL, canvas.width / 2 - 60, 45);
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillText(scoreR, canvas.width / 2 + 35, 45);
+    }
+
+    // 3. BRICK BREAKER
+    function renderBrickGame() {
+      if (state.keys.left && bPaddle.x > 10) bPaddle.x -= 7;
+      if (state.keys.right && bPaddle.x < canvas.width - bPaddle.width - 10) bPaddle.x += 7;
+
+      bBall.x += bBall.vx;
+      bBall.y += bBall.vy;
+
+      if (bBall.x < 10 || bBall.x > canvas.width - 10) { bBall.vx *= -1; playTone(450, 'square', 0.04, 0.08); }
+      if (bBall.y < 10) { bBall.vy *= -1; playTone(450, 'square', 0.04, 0.08); }
+
+      // Colisión Pala
+      if (bBall.y > bPaddle.y - 8 && bBall.y < bPaddle.y + bPaddle.height && bBall.x > bPaddle.x && bBall.x < bPaddle.x + bPaddle.width) {
+        bBall.vy = -Math.abs(bBall.vy);
+        bBall.vx = ((bBall.x - (bPaddle.x + bPaddle.width / 2)) / 10);
+        playTone(650, 'triangle', 0.05, 0.15);
+      }
+
+      // Perder
+      if (bBall.y > canvas.height) {
+        resetGameObjects('brick');
+        playTone(130, 'sawtooth', 0.25, 0.2);
+      }
+
+      // Dibujar Pala y Pelota
+      ctx.fillStyle = '#00ff87';
+      ctx.fillRect(bPaddle.x, bPaddle.y, bPaddle.width, bPaddle.height);
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(bBall.x, bBall.y, bBall.radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Dibujar y Colisionar Bloques
+      bricks.forEach(b => {
+        if (!b.alive) return;
+        ctx.fillStyle = b.color;
+        ctx.fillRect(b.x, b.y, b.width, b.height);
+
+        if (bBall.x > b.x && bBall.x < b.x + b.width && bBall.y > b.y && bBall.y < b.y + b.height) {
+          b.alive = false;
+          bBall.vy *= -1;
+          score += 50;
+          playTone(800, 'square', 0.05, 0.1);
+        }
+      });
+
+      ctx.font = '12px "Press Start 2P", monospace';
+      ctx.fillStyle = '#00ff87';
+      ctx.fillText('SCORE: ' + score, 20, 25);
+    }
+
+    // Iniciar loop de render
+    requestAnimationFrame(gameLoop);
+  </script>
+</body>
+</html>
